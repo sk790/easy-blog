@@ -3,8 +3,8 @@ import User from "../models/user.model.js";
 import { errorHandler } from "../utils/error.js";
 
 export const updateUser = async (req, res, next) => {
-  const { email, username, password } = req.body;
-  console.log(username.length);
+  let { email, username, password } = req.body;
+  console.log(email, username, password);
   if (req.user._id !== req.params.id) {
     return next(errorHandler(403, "You can only update your account", res));
   }
@@ -36,17 +36,17 @@ export const updateUser = async (req, res, next) => {
     }
   }
   try {
-    if (email) {
-      const findemail = await User.findOne({ email });
-      if (findemail) {
-        return next(errorHandler(400, "Email already exists", res));
-      }
-    }
+    // if (email) {
+    //   const findemail = await User.findOne({ email });
+    //   if (findemail) {
+    //     return next(errorHandler(400, "Email already exists", res));
+    //   }
+    // }
     const updatedUser = await User.findByIdAndUpdate(
       req.params.userId,
       {
         $set: {
-          username: username.toLowerCase(),
+          username,
           email,
           password,
           profilePicture: req.body.profilePicture,
@@ -57,6 +57,7 @@ export const updateUser = async (req, res, next) => {
     if (updatedUser) {
       res.status(200).json({
         success: true,
+        message: "User updated successfully",
         user: updatedUser,
       });
     }
