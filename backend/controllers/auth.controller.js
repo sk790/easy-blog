@@ -7,7 +7,7 @@ export const signUp = async (req, res, next) => {
   const { username, email, password } = req.body;
 
   if (!username || !email || !password) {
-    next(errorHandler(400, "All fields are required",res));
+    next(errorHandler(400, "All fields are required", res));
   }
 
   const user = await User.findOne({ email });
@@ -19,7 +19,7 @@ export const signUp = async (req, res, next) => {
   const hashedPassword = bcryptjs.hashSync(password, 10);
 
   const newUser = new User({
-    username:username.toLowerCase(),
+    username: username.toLowerCase(),
     email,
     password: hashedPassword,
   });
@@ -36,11 +36,11 @@ export const signIn = async (req, res, next) => {
   const { email, password } = req.body;
 
   if (!email || !password) {
-   return next(errorHandler(400, "All fields are required", res));
+    return next(errorHandler(400, "All fields are required", res));
   }
 
   try {
-    const validUser = await User.findOne({ email })
+    const validUser = await User.findOne({ email });
     if (!validUser) {
       return next(errorHandler(404, "User not found", res));
     }
@@ -48,13 +48,17 @@ export const signIn = async (req, res, next) => {
     if (!validPassword) {
       return next(errorHandler(400, "Invalid password", res));
     }
-    const token = jwt.sign({ id: validUser._id }, process.env.JWT_SECRET);
+    const token = jwt.sign(
+      { id: validUser._id, isAdmin: validUser.isAdmin },
+      process.env.JWT_SECRET
+    );
 
     res
       .status(200)
       .cookie("access_token", token, {
         httpOnly: true,
-      }).json({user:validUser,success:true,message:"SignIn Successfull"})
+      })
+      .json({ user: validUser, success: true, message: "SignIn Successfull" });
   } catch (error) {
     next(error);
   }

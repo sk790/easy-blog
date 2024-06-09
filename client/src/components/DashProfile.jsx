@@ -2,7 +2,7 @@ import { Button, Modal, TextInput } from "flowbite-react";
 import { useEffect, useRef, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { CircularProgressbar } from "react-circular-progressbar";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { HiOutlineExclamationCircle } from "react-icons/hi";
 import {
   updateStart,
@@ -33,7 +33,7 @@ export default function DashProfile() {
   const [imageFileUploadProgress, setImageFileUploadProgress] = useState(null);
   const [formData, setFormData] = useState({});
   const [showModal, setShowModal] = useState(false);
-  // const [uploadingImage, setUploadingImage] = useState(false);
+  const [uploadingImage, setUploadingImage] = useState(false);
   const filePicker = useRef();
 
   const handleChangeImage = (e) => {
@@ -50,7 +50,7 @@ export default function DashProfile() {
   }, [imageFile]);
 
   const uploadImage = () => {
-    // setUploadingImage(true);
+    setUploadingImage(true);
     const storage = getStorage(app);
     if (!imageFile || !imageFile.type.startsWith("image/")) {
       toast.error("Please select a valid image file.");
@@ -77,6 +77,7 @@ export default function DashProfile() {
         getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
           setImageFileUrl(downloadURL);
           setFormData({ ...formData, profilePicture: downloadURL });
+          setUploadingImage(false);
         });
       }
     );
@@ -229,9 +230,14 @@ export default function DashProfile() {
           id="password"
           onChange={handleChange}
         />
-        <Button type="submit" gradientDuoTone={"purpleToBlue"} outline>
+        <Button type="submit" gradientDuoTone={"purpleToBlue"} outline disabled={loading || uploadingImage}>
           {loading ? "Updating....." : "Update"}
         </Button>
+        {currentUser.isAdmin && (
+          <Link to={"/create-post"}>
+            <Button gradientDuoTone={"purpleToPink"} className="w-full">Create a post</Button>
+          </Link>
+        )}
       </form>
       <div className="flex justify-between mt-5">
         <span
