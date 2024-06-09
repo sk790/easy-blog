@@ -3,14 +3,8 @@ import { Link,useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 
 export default function Home() {
-  const navigate = useNavigate()
-  const {currentUser} = useSelector((state)=>state.user)
-  useEffect(() => {
-    if(currentUser === null){
-      navigate('/sign-in')
-    }
-    
-  },[currentUser])
+  // const navigate = useNavigate()
+  // const {currentUser} = useSelector((state)=>state.user)
   return (
     <div>
       <div className='flex flex-col gap-6 p-28 px-3 max-w-6xl mx-auto '>
