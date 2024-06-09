@@ -1,11 +1,12 @@
 import React from "react";
-import { Button } from "flowbite-react";
+import { Button, Toast } from "flowbite-react";
 import { AiFillGoogleCircle } from "react-icons/ai";
 import { GoogleAuthProvider, signInWithPopup, getAuth } from "firebase/auth";
 import { app } from "../firebase";
 import { signInSuccess } from "../redux/user/userSlice";
 import { useDispatch } from "react-redux";
 import {useNavigate} from 'react-router-dom'
+import toast from "react-hot-toast";
 
 export default function OAuth() {
   const auth = getAuth(app);
@@ -35,6 +36,7 @@ export default function OAuth() {
         navigate("/");
       }
     } catch (error) {
+      toast.error("Internal Server Error");
       console.log(error); 
     }
   };

@@ -4,7 +4,7 @@ import { errorHandler } from "../utils/error.js";
 
 export const updateUser = async (req, res, next) => {
   let { email, username, password } = req.body;
-  if (req.user._id !== req.params.id) {
+  if (req.user.id !== req.params.userId) {
     return next(errorHandler(403, "You can only update your account", res));
   }
   if (password) {
