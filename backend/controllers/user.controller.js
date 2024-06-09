@@ -4,7 +4,6 @@ import { errorHandler } from "../utils/error.js";
 
 export const updateUser = async (req, res, next) => {
   let { email, username, password } = req.body;
-  console.log(email, username, password);
   if (req.user._id !== req.params.id) {
     return next(errorHandler(403, "You can only update your account", res));
   }
@@ -65,3 +64,17 @@ export const updateUser = async (req, res, next) => {
     next(error);
   }
 };
+export const deleteUser = async(req,res,next)=>{
+    if(req.user.id !== req.params.userId){
+        return next(errorHandler(403, "You can only delete your account", res));
+    }
+    const user = await User.findByIdAndDelete(req.params.userId);
+    if (!user) {
+      return next(errorHandler(404, "User not found", res));
+    }
+    res.status(200).json({
+      success: true,
+      message: "User deleted successfully",
+      user: null,
+    });
+}
