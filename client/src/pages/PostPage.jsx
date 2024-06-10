@@ -3,6 +3,7 @@ import { Link, useParams } from "react-router-dom";
 import toast from "react-hot-toast";
 import { Button, Spinner } from "flowbite-react";
 import CallToAction from "../components/CallToAction";
+import CommentSection from "../components/CommentSection";
 export default function PostPage() {
   const [posts, setPost] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -66,6 +67,7 @@ export default function PostPage() {
       <div className="mx-auto max-w-4xl">
         <CallToAction />
       </div>
+      <CommentSection postId = {posts && posts._id}/>
     </main>
   );
 }

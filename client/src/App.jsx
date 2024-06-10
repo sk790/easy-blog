@@ -14,10 +14,12 @@ import PrivateRoute from "./components/PrivateRoute";
 import AdminRoute from "./components/AdminRoute";
 import UpdatePost from "./pages/UpdatePost";
 import PostPage from "./pages/PostPage";
+import ScrollToTop from "./components/ScrollToTop";
 function App() {
   return (
     <>
       <BrowserRouter>
+      <ScrollToTop/>
         <Header />
         <Routes>
           <Route path="/sign-in" element={<SignIn />} />
