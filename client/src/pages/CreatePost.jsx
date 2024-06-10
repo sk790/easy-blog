@@ -3,17 +3,23 @@ import { useEffect, useState } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import toast from "react-hot-toast";
-import { getDownloadURL, getStorage, ref, uploadBytesResumable } from "firebase/storage";
+import {useNavigate} from 'react-router-dom'
+import {
+  getDownloadURL,
+  getStorage,
+  ref,
+  uploadBytesResumable,
+} from "firebase/storage";
 import { app } from "../firebase";
 
 export default function CreatePost() {
+  const navigate = useNavigate()
   const [file, setFile] = useState(null);
   const [imageUploadProgress, setImageUploadProgress] = useState(null);
   const [formData, setFormData] = useState({});
-
   useEffect(() => {
-    if(formData.image) {
-      toast.success("Image uploaded successfully")
+    if (formData.image) {
+      toast.success("Image uploaded successfully");
     }
   }, [formData.image]);
 
@@ -22,7 +28,7 @@ export default function CreatePost() {
       if (!file) {
         return toast.error("Please select an image");
       }
-      if(formData.image){
+      if (formData.image) {
         return toast.error("Image already uploaded");
       }
       const storage = getStorage(app);
@@ -49,18 +55,39 @@ export default function CreatePost() {
         }
       );
     } catch (error) {
-      toast.error(
-        "Error uploading image"
-      );
+      toast.error("Error uploading image");
       setImageUploadProgress(null);
       console.log(error);
     }
   };
 
+  const handleSubmit = async(e)=>{
+    e.preventDefault();
+    try {
+      const res = await fetch("/api/post/create", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      })
+      const data = await res.json();
+      if(data.success){
+        toast.success(data.message);
+        navigate(`/post/${data.post.slug}`);
+      }else{
+        toast.error(data.error);
+      }
+    } catch (error) {
+      toast.error("Internal Server Error");
+      console.log(error);
+    }
+  }
+
   return (
     <div className="min-h-screen max-w-3xl mx-auto p-3">
       <h1 className="text-3xl font-bold text-center m-7">Create Post</h1>
-      <form className="flex flex-col gap-4">
+      <form onSubmit={handleSubmit} className="flex flex-col gap-4">
         <div className="flex flex-col gap-4 sm:flex-row justify-between">
           <TextInput
             type="text"
@@ -68,8 +95,15 @@ export default function CreatePost() {
             required
             id="title"
             className="flex-1"
+            onChange={(e) =>
+              setFormData({ ...formData, title: e.target.value })
+            }
           />
-          <Select>
+          <Select
+            onChange={(e) =>
+              setFormData({ ...formData, category: e.target.value })
+            }
+          >
             <option value="uncategorized">Select a category</option>
             <option value="javascript">Java Script</option>
             <option value="react">React</option>
@@ -79,7 +113,6 @@ export default function CreatePost() {
         <div className="flex gap-4 items-center justify-between border-4 border-teal-500 border-dotted p-3">
           <FileInput
             type="file"
-            required
             accept="image/*"
             onChange={(e) => setFile(e.target.files[0])}
           />
@@ -106,6 +139,8 @@ export default function CreatePost() {
           className="h-72 mb-12"
           placeholder="Write something..."
           required
+          onChange={(value) => setFormData({ ...formData, content: value })}
+          value={formData.content}
         />
         <Button type="submit" gradientDuoTone={"purpleToBlue"} size={"lg"}>
           Publish
