@@ -61,6 +61,7 @@ export const getposts = async (req, res, next) => {
     });
 
     res.status(200).json({
+      success: true,
       posts,
       totalPosts,
       lastMonthPosts,
