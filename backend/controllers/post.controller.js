@@ -20,13 +20,11 @@ export const create = async (req, res, next) => {
   });
   try {
     const savedPost = await newPost.save();
-    res
-      .status(201)
-      .json({
-        post: savedPost,
-        success: true,
-        message: "Post Created Successfully",
-      });
+    res.status(201).json({
+      post: savedPost,
+      success: true,
+      message: "Post Created Successfully",
+    });
   } catch (error) {
     next(error);
   }
@@ -109,7 +107,11 @@ export const updatepost = async (req, res, next) => {
       },
       { new: true }
     );
-    res.status(200).json(updatedPost);
+    res.status(200).json({
+      success: true,
+      message: "The post has been updated.",
+      updatedPost: updatedPost,
+    });
   } catch (error) {
     next(error);
   }
