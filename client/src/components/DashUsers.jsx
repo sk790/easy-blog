@@ -43,19 +43,16 @@ export default function DashUsers() {
       console.log(error);
     }
   };
-  const handleDeletePost = async () => {
+  const handleDeleteUser = async () => {
     setShowModal(false);
     try {
-      const res = await fetch(
-        `/api/post/deletepost/${postId}/${currentUser._id}`,
-        {
-          method: "DELETE",
-        }
-      );
+      const res = await fetch(`/api/delete/${userId}`, {
+        method: "DELETE",
+      });
       const data = await res.json();
       if (data.success) {
         toast.success(data.message);
-        setPosts(posts.filter((post) => post._id !== postId));
+        setUsers(users.filter((user) => user._id !== userId));
       }
     } catch (error) {
       console.log(error);
@@ -91,7 +88,11 @@ export default function DashUsers() {
                   <Table.Cell>{user.username}</Table.Cell>
                   <Table.Cell>{user.email}</Table.Cell>
                   <Table.Cell>
-                    <span className={`${user.isAdmin? "text-green-700":"text-gray-300"} font-medium`}>
+                    <span
+                      className={`${
+                        user.isAdmin ? "text-green-700" : "text-gray-300"
+                      } font-medium`}
+                    >
                       {user.isAdmin ? "Admin" : "User"}
                     </span>
                   </Table.Cell>
@@ -132,13 +133,13 @@ export default function DashUsers() {
           <div className="text-center">
             <HiOutlineExclamationCircle className="mx-auto mb-4 h-14 w-14 text-gray-400 dark:text-gray-200" />
             <h3 className="mt-5 text-2xl font-normal text-gray-500 dark:text-gray-400">
-              Are you sure you want to delete your this post?
+              Are you sure you want to delete this user?
             </h3>
           </div>
           <div className="flex gap-4">
             <Button
               color="failure"
-              onClick={handleDeletePost}
+              onClick={handleDeleteUser}
               className="w-full mt-5"
             >
               Yes, I'm sure
