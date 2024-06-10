@@ -72,6 +72,7 @@ export default function DashProfile() {
         toast.error(
           "error uploading image or please select image size less than 2MB"
         );
+        setImageFileUploadProgress(null);
       },
       () => {
         getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
@@ -230,12 +231,19 @@ export default function DashProfile() {
           id="password"
           onChange={handleChange}
         />
-        <Button type="submit" gradientDuoTone={"purpleToBlue"} outline disabled={loading || uploadingImage}>
+        <Button
+          type="submit"
+          gradientDuoTone={"purpleToBlue"}
+          outline
+          disabled={loading || uploadingImage}
+        >
           {loading ? "Updating....." : "Update"}
         </Button>
         {currentUser.isAdmin && (
           <Link to={"/create-post"}>
-            <Button gradientDuoTone={"purpleToPink"} className="w-full">Create a post</Button>
+            <Button gradientDuoTone={"purpleToPink"} className="w-full">
+              Create a post
+            </Button>
           </Link>
         )}
       </form>
