@@ -20,7 +20,13 @@ export const create = async (req, res, next) => {
   });
   try {
     const savedPost = await newPost.save();
-    res.status(201).json({ post: savedPost, success: true,message:"Post Created Successfully" });
+    res
+      .status(201)
+      .json({
+        post: savedPost,
+        success: true,
+        message: "Post Created Successfully",
+      });
   } catch (error) {
     next(error);
   }
@@ -77,7 +83,10 @@ export const deletepost = async (req, res, next) => {
   }
   try {
     await Post.findByIdAndDelete(req.params.postId);
-    res.status(200).json("The post has been deleted");
+    res.status(200).json({
+      success: true,
+      message: "The post has been deleted.",
+    });
   } catch (error) {
     next(error);
   }
