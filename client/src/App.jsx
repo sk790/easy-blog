@@ -13,6 +13,7 @@ import Dashboard from "./pages/Dashboard";
 import PrivateRoute from "./components/PrivateRoute";
 import AdminRoute from "./components/AdminRoute";
 import UpdatePost from "./pages/UpdatePost";
+import PostPage from "./pages/PostPage";
 function App() {
   return (
     <>
@@ -33,6 +34,7 @@ function App() {
             <Route path="/create-post" element={<CreatePost />} />
             <Route path="/update-post/:postId" element={<UpdatePost />} />
           </Route>
+          <Route path="/post/:postSlug" element={<PostPage />} />
         </Routes>
         <Footer />
         <Toaster />

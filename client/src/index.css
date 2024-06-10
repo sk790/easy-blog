@@ -8,5 +8,47 @@ body{
 }
 
 .ql-editor{
-    font-size: 1.5rem;
+    font-size: 1.05rem;
 }
+.post-content p{
+    margin-bottom: 0.5rem;
+}
+.post-content h1{
+    font-size: 1.5rem;
+    font-weight: 600;
+    font-family: sans-serif;
+    margin: 1.5rem 0;
+}
+.post-content a{
+    color: rgb(73, 149, 199);
+    text-decoration: none;
+}
+.post-content a:hover{
+    text-decoration: underline;
+}
+
+.dark .post-content h1{
+    color: red;
+}
+
+.post-content h2{
+    /* height: 2rem; */
+    padding: .8rem;
+}
+
+/* .post-content h2:nth-of-type(odd){
+    background-color: black;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    padding-left: 10px;
+}
+.post-content h2:nth-of-type(even){
+    background-color: black;
+    border-bottom-right-radius: 10px;
+    border-bottom-left-radius: 10px;
+    padding-left: 10px;
+} */
+/* .post-content h2{
+    background-color: black;
+    border-radius: 10px;
+} */

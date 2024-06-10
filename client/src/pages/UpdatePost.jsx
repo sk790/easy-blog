@@ -4,6 +4,7 @@ import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import toast from "react-hot-toast";
 import { useNavigate, useParams } from "react-router-dom";
+import { useSelector } from "react-redux";
 import {
   getDownloadURL,
   getStorage,
@@ -11,22 +12,23 @@ import {
   uploadBytesResumable,
 } from "firebase/storage";
 import { app } from "../firebase";
-import { useSelector } from "react-redux";
 
 export default function UpdatePost() {
-  const { postId } = useParams();
   const navigate = useNavigate();
   const [file, setFile] = useState(null);
   const [imageUploadProgress, setImageUploadProgress] = useState(null);
-  const [formData, setFormData] = useState({});
-
+  const [formData, setFormData] = useState({ content: "" });
+  const { postId } = useParams();
   const { currentUser } = useSelector((state) => state.user);
+
   useEffect(() => {
     try {
       const fetchPost = async () => {
         const res = await fetch(`/api/post/getposts?postId=${postId}`);
         const data = await res.json();
-        setFormData(data.posts[0]);
+        if (data.success) {
+          setFormData(data.posts[0]);
+        }
       };
       fetchPost();
     } catch (error) {
@@ -72,6 +74,7 @@ export default function UpdatePost() {
   const handleUpdatePost = async (e) => {
     e.preventDefault();
     try {
+      console.log("handle update post", formData);
       const res = await fetch(
         `/api/post/updatepost/${formData._id}/${currentUser._id}`,
         {
@@ -93,6 +96,10 @@ export default function UpdatePost() {
       toast.error("Internal Server Error");
       console.log(error);
     }
+  };
+
+  const handleQuillChange = (value) => {
+    setFormData((prevState) => ({ ...prevState, content: value }));
   };
 
   return (
@@ -152,8 +159,8 @@ export default function UpdatePost() {
           className="h-72 mb-12"
           placeholder="Write something..."
           required
-          onChange={(value) => setFormData({ ...formData, content: value })}
           value={formData.content}
+          onChange={handleQuillChange}
         />
         <Button type="submit" gradientDuoTone={"purpleToBlue"} size={"lg"}>
           Update Post
