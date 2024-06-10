@@ -1,11 +1,30 @@
 import { Button, Textarea } from "flowbite-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import toast from "react-hot-toast";
+import Comment from "./Comment";
 export default function CommentSection({ postId }) {
   const { currentUser } = useSelector((state) => state.user);
   const [comment, setComment] = useState("");
+  const [comments, setComments] = useState([]);
+  const [loading, setLoading] = useState(false);
+  console.log(comments);
+
+  useEffect(() => {
+    try {
+      const fetchComments = async () => {
+        const res = await fetch(`/api/comment/get-post-comments/${postId}`);
+        const data = await res.json();
+        if (data.success) {
+          setComments(data.comments);
+        }
+      };
+      fetchComments();
+    } catch (error) {
+      console.log(error);
+    }
+  }, [postId, loading]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -13,6 +32,7 @@ export default function CommentSection({ postId }) {
       return toast.error("Comment must be less than 200 characters");
     }
     try {
+      setLoading(true);
       const res = await fetch("/api/comment/create", {
         method: "POST",
         headers: {
@@ -28,9 +48,12 @@ export default function CommentSection({ postId }) {
       if (data.success) {
         toast.success(data.message);
         setComment("");
+        setLoading(false);
       }
-      console.log(data);
-    } catch (error) {}
+    } catch (error) {
+      console.log(error);
+      setLoading(false);
+    }
   };
 
   return (
@@ -78,6 +101,21 @@ export default function CommentSection({ postId }) {
       )}
 
       {/* comments list */}
+      {comments.length === 0 ? (
+        <p>No comments yet</p>
+      ) : (
+        <>
+          <div className="flex gap-1 my-5 items-center text-sm">
+            <p>Comments</p>
+            <div className="text-gray-500 border-2 py-1 px-2 rounded-sm">
+              {comments.length}
+            </div>
+          </div>
+          {comments.map((comment) => (
+            <Comment key={comment._id} comment={comment} />
+          ))}
+        </>
+      )}
     </div>
   );
 }
