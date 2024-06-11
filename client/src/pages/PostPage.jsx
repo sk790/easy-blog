@@ -1,13 +1,15 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import toast from "react-hot-toast";
 import { Button, Spinner } from "flowbite-react";
 import CallToAction from "../components/CallToAction";
 import CommentSection from "../components/CommentSection";
+import PostCard from "../components/PostCard";
 export default function PostPage() {
   const [posts, setPost] = useState(null);
   const [loading, setLoading] = useState(true);
   const { postSlug } = useParams();
+  const [recentPosts, setRecentPosts] = useState([]);
+  console.log(recentPosts);
   useEffect(() => {
     const fetchPost = async () => {
       try {
@@ -26,6 +28,26 @@ export default function PostPage() {
       }
     };
     fetchPost();
+  }, [postSlug]);
+
+  useEffect(() => {
+    const fetchRecentPosts = async () => {
+      try {
+        setLoading(true);
+        const res = await fetch("/api/post/getposts?limit=3");
+        const data = await res.json();
+        if (data.success) {
+          setRecentPosts(data.posts);
+          setLoading(false);
+        } else {
+          setLoading(false);
+        }
+      } catch (error) {
+        console.log(error);
+        setLoading(false);
+      }
+    };
+    fetchRecentPosts();
   }, [postSlug]);
 
   if (loading)
@@ -65,7 +87,14 @@ export default function PostPage() {
       <div className="mx-auto max-w-4xl">
         <CallToAction />
       </div>
-      <CommentSection postId = {posts && posts._id}/>
+      <CommentSection postId={posts && posts._id} />
+      <div className="flex gap-5 flex-col justify-center items-center mb-5">
+        <h1 className="text-4xl font-bold">Recent Posts</h1>
+        <div className="flex flex-wrap gap-3">
+          {recentPosts &&
+            recentPosts.map((post) => <PostCard post={post} key={post._id} />)}
+        </div>
+      </div>
     </main>
   );
 }
