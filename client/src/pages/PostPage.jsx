@@ -15,11 +15,9 @@ export default function PostPage() {
         const res = await fetch(`/api/post/getposts?slug=${postSlug}`);
         const data = await res.json();
         if (data.success) {
-          toast.success("successfully fetch");
           setPost(data.posts[0]);
           setLoading(false);
         } else {
-          toast.error(data.error);
           setLoading(false);
         }
       } catch (error) {
