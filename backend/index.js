@@ -17,7 +17,7 @@ app.use(cors({
 
 //routes
 app.use("/api/auth",authRouter);
-app.use("/api",userRouter)
+app.use("/api/user",userRouter)
 app.use("/api/post",postRouter)
 app.use("/api/comment",commentRouter)
 
