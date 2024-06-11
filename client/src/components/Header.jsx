@@ -1,5 +1,5 @@
 import { Avatar, Button, Dropdown, Navbar, TextInput } from "flowbite-react";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { AiOutlineSearch } from "react-icons/ai";
 import { FaMoon, FaSun } from "react-icons/fa";
@@ -8,12 +8,24 @@ import { toggleTheme } from "../redux/theme/themeSlice";
 import toast from "react-hot-toast";
 import { signoutSuccess } from "../redux/user/userSlice";
 
+
 export default function Header() {
   const { currentUser } = useSelector((state) => state.user);
   const { theme } = useSelector((state) => state.theme);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const path = useLocation().pathname;
+  const [searchTearm, setSearchTearm] = useState("");
+  const location = useLocation();
+  console.log(searchTearm);
+
+  useEffect(() => {
+    const urlPrams = new URLSearchParams(location.search);
+    const searchTearmFromUrl = urlPrams.get("searchTearm");
+    if (searchTearmFromUrl) {
+      setSearchTearm(searchTearmFromUrl);
+    }
+  }, [location.search]);
 
   const handleSignOut = async () => {
     try {
@@ -35,6 +47,11 @@ export default function Header() {
       toast.error(error.message);
     }
   };
+const handleSubmit = (e)=>{
+  e.preventDefault();
+  navigate(`/search?searchTearm=${searchTearm}`)
+}
+  
   return (
     <Navbar className="border-b-2 self-center whitespace-nowrap text-sm sm:text-xl font-semibold dark:text-white">
       <Link to="/">
@@ -43,12 +60,14 @@ export default function Header() {
         </span>
         Blog
       </Link>
-      <form>
+      <form onSubmit={handleSubmit}>
         <TextInput
           placeholder="Search..."
           type="search"
           rightIcon={AiOutlineSearch}
           className="hidden lg:inline"
+          onChange={(e)=>setSearchTearm(e.target.value)}
+          value={searchTearm}
         />
       </form>
       <Button className="w-12 h-10 lg:hidden" color="gray" pill>
