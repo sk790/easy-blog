@@ -58,7 +58,7 @@ export default function CommentSection({ postId }) {
     }
   };
 
-  const onLike = async (commentId) => {
+  const handleLike = async (commentId) => {
     try {
       if (!currentUser) {
         navigate("/sign-in");
@@ -84,6 +84,14 @@ export default function CommentSection({ postId }) {
     } catch (error) {
       console.log(error);
     }
+  };
+
+  const handleEdit = async (comment, editedContent) => {
+    setComments(
+      comments.map((c) =>
+        c._id === comment._id ? { ...c, content: editedContent } : comment
+      )
+    );
   };
 
   return (
@@ -142,7 +150,7 @@ export default function CommentSection({ postId }) {
             </div>
           </div>
           {comments.map((comment) => (
-            <Comment key={comment._id} comment={comment} onLike={onLike} />
+            <Comment key={comment._id} comment={comment} onLike={handleLike} onEdit = {handleEdit} />
           ))}
         </>
       )}
