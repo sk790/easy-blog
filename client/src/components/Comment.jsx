@@ -1,8 +1,16 @@
 import React, { useEffect, useState } from "react";
 import moment from "moment";
-export default function Comment({ comment }) {
+import { FaThumbsUp } from "react-icons/fa";
+import { useSelector } from "react-redux";
+
+export default function Comment({ comment, onLike }) {
   const [commentUser, setCommentUser] = useState({});
-  console.log(commentUser);
+  const { currentUser } = useSelector((state) => state.user);
+  const [numberOfLikes, setNumberOfLikes] = useState(comment.numberOfLikes);
+
+  const [like, setLike] = useState(
+    currentUser ? comment.likes.includes(currentUser._id) : false
+  );
   useEffect(() => {
     try {
       const getUser = async () => {
@@ -10,7 +18,6 @@ export default function Comment({ comment }) {
         const data = await res.json();
         if (data.success) {
           setCommentUser(data.user);
-          console.log(data);
         }
       };
       getUser();
@@ -18,6 +25,17 @@ export default function Comment({ comment }) {
       console.log(error);
     }
   }, [comment]);
+
+  const handlelike = () => {
+    if (like) {
+      setLike(false);
+      setNumberOfLikes((prev) => prev - 1);
+    } else {
+      setLike(true);
+      setNumberOfLikes((prev) => prev + 1);
+    }
+  };
+  
   return (
     <div className="flex p-4 border-b dark:border-gray-700 text-sm">
       <div className="flex-shrink-0 mr-3">
@@ -37,6 +55,23 @@ export default function Comment({ comment }) {
           </span>
         </div>
         <p className="text-gray-500 mb-2">{comment.content}</p>
+        <div className="flex items-center gap-2 pt-2 text-xs border-t max-w-fit">
+          <button
+            onClick={() => {
+              onLike(comment._id), handlelike();
+            }}
+            type="button"
+            className={`${like ? "text-blue-500" : "text-gray-400"}`}
+          >
+            <FaThumbsUp />
+          </button>
+          <div className="">
+            {numberOfLikes > 0 &&
+              numberOfLikes +
+                " " +
+                (numberOfLikes === 1 ? "like" : "likes")}
+          </div>
+        </div>
       </div>
     </div>
   );
