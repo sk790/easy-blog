@@ -1,5 +1,8 @@
 import { Sidebar } from "flowbite-react";
 import { useEffect, useState } from "react";
+import { LiaCommentSolid } from "react-icons/lia";
+import { RiArticleLine } from "react-icons/ri";
+import { FaRegUser } from "react-icons/fa6";
 import {
   HiArrowCircleRight,
   HiDocument,
@@ -60,7 +63,7 @@ export default function DashSidebar() {
           <Link to={"/dashboard?tab=profile"}>
             <Sidebar.Item
               active={tab === "profile"}
-              icon={HiUser}
+              icon={FaRegUser}
               label={currentUser && currentUser.isAdmin ? "Admin" : "User"}
               labelColor="dark"
               as="div"
@@ -68,9 +71,16 @@ export default function DashSidebar() {
               Profile
             </Sidebar.Item>
           </Link>
+          {/* {currentUser && currentUser.isAdmin && (
+            <Link to={"/dashboard?tab=create-post"}>
+              <Sidebar.Item active={tab === "create-post"} icon={HiDocument} as="div">
+                Create Post
+              </Sidebar.Item>
+            </Link>
+          )} */}
           {currentUser && currentUser.isAdmin && (
             <Link to={"/dashboard?tab=posts"}>
-              <Sidebar.Item active={tab === "posts"} icon={HiDocument} as="div">
+              <Sidebar.Item active={tab === "posts"} icon={RiArticleLine} as="div">
                 Posts
               </Sidebar.Item>
             </Link>
@@ -90,7 +100,7 @@ export default function DashSidebar() {
             <Link to={"/dashboard?tab=comments"}>
               <Sidebar.Item
                 active={tab === "comments"}
-                icon={HiOutlineUserGroup}
+                icon={LiaCommentSolid}
                 as="div"
               >
                 Comments

@@ -1,17 +1,12 @@
-import { Button, Modal, TextInput } from "flowbite-react";
+import { Button, TextInput } from "flowbite-react";
 import { useEffect, useRef, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { CircularProgressbar } from "react-circular-progressbar";
 import { Link, useNavigate } from "react-router-dom";
-import { HiOutlineExclamationCircle } from "react-icons/hi";
 import {
   updateStart,
   updateSuccess,
   updateFailure,
-  deleteStart,
-  deleteSuccess,
-  deleteFailure,
-  signoutSuccess,
 } from "../redux/user/userSlice";
 
 import "react-circular-progressbar/dist/styles.css";
@@ -32,7 +27,6 @@ export default function DashProfile() {
   const [imageFileUrl, setImageFileUrl] = useState(null);
   const [imageFileUploadProgress, setImageFileUploadProgress] = useState(null);
   const [formData, setFormData] = useState({});
-  const [showModal, setShowModal] = useState(false);
   const [uploadingImage, setUploadingImage] = useState(false);
   const filePicker = useRef();
 
@@ -118,53 +112,6 @@ export default function DashProfile() {
       dispatch(updateFailure(error));
     }
   };
-
-  const handleDelete = async (e) => {
-    e.preventDefault();
-    try {
-      dispatch(deleteStart());
-      const res = await fetch(`/api/delete/${currentUser._id}`, {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      const data = await res.json();
-      if (!data.success) {
-        dispatch(deleteFailure(data.error));
-        return toast.error(data.error);
-      } else {
-        dispatch(deleteSuccess(data.user));
-        toast.success(data.message);
-        navigate("/sign-in");
-      }
-    } catch (error) {
-      dispatch(deleteFailure(error));
-      toast.error(error);
-    }
-  };
-
-  const handleSignOut = async (e) => {
-    e.preventDefault();
-    try {
-      const res = await fetch(`/api/user/signout`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      const data = await res.json();
-      if (!data.success) {
-        return toast.error(data.error);
-      } else {
-        dispatch(signoutSuccess(data.user));
-        toast.success(data.message);
-        navigate("/sign-in");
-      }
-    } catch (error) {
-      toast.error(error.message);
-    }
-  };
   return (
     <div className="max-w-lg mx-auto p-3 w-full">
       <h1 className="my-7 text-center font-semibold text-3xl">Profile</h1>
@@ -247,49 +194,6 @@ export default function DashProfile() {
           </Link>
         )}
       </form>
-      <div className="flex justify-between mt-5">
-        <span
-          onClick={() => setShowModal(true)}
-          className="text-red-500 cursor-pointer"
-        >
-          Delete Account
-        </span>
-        <span onClick={handleSignOut} className="text-red-500 cursor-pointer">
-          Sign Out
-        </span>
-      </div>
-      <Modal
-        show={showModal}
-        onClose={() => setShowModal(false)}
-        popup
-        size={"md"}
-      >
-        <Modal.Header />
-        <Modal.Body>
-          <div className="text-center">
-            <HiOutlineExclamationCircle className="mx-auto mb-4 h-14 w-14 text-gray-400 dark:text-gray-200" />
-            <h3 className="mt-5 text-2xl font-normal text-gray-500 dark:text-gray-400">
-              Are you sure you want to delete your account?
-            </h3>
-          </div>
-          <div className="flex gap-4">
-            <Button
-              color="failure"
-              onClick={handleDelete}
-              className="w-full mt-5"
-            >
-              Yes, I'm sure
-            </Button>
-            <Button
-              color="gray"
-              className="w-full mt-5"
-              onClick={() => setShowModal(false)}
-            >
-              No, cancel
-            </Button>
-          </div>
-        </Modal.Body>
-      </Modal>
     </div>
   );
 }

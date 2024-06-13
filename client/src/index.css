@@ -32,8 +32,12 @@ body{
 }
 
 .post-content h2{
-    /* height: 2rem; */
-    padding: .8rem;
+    height: 2rem;
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+}
+.post-content p{
+    margin-bottom: 1rem;
 }
 
 /* .post-content h2:nth-of-type(odd){

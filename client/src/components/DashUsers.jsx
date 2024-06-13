@@ -82,7 +82,7 @@ export default function DashUsers() {
                     <img
                       src={user.profilePicture}
                       alt={user.username}
-                      className="w-16 h-16 object-cover bg-gray-500"
+                      className="w-16 h-16 rounded-full object-cover bg-gray-500"
                     />
                   </Table.Cell>
                   <Table.Cell>{user.username}</Table.Cell>
@@ -90,7 +90,9 @@ export default function DashUsers() {
                   <Table.Cell>
                     <span
                       className={`${
-                        user.isAdmin ? "text-green-700" : "text-gray-300"
+                        user.isAdmin
+                          ? "text-white bg-gray-700  p-1 rounded-md dark:bg-black dark:text-green-700"
+                          : "text-gray-300"
                       } font-medium`}
                     >
                       {user.isAdmin ? "Admin" : "User"}
@@ -102,7 +104,7 @@ export default function DashUsers() {
                         setShowModal(true);
                         setUserId(user._id);
                       }}
-                      className="cursor-pointer text-red-700 font-medium hover:underline"
+                      className="cursor-pointer bg-red-600 text-white p-1 rounded-md font-medium hover:underline"
                     >
                       Delete
                     </span>

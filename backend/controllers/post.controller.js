@@ -116,3 +116,30 @@ export const updatepost = async (req, res, next) => {
     next(error);
   }
 };
+
+export const likePost = async (req, res, next) => {
+  if (req.user && req.user.id !== req.params.userId) {
+    return next(errorHandler(403, "You are not allowed to like this post"));
+  }
+  try {
+    const post = await Post.findById(req.params.postId);
+    if (!post) {
+      return next(errorHandler(404, "Post not found"));
+    }
+    if (!post.likes.includes(req.user.id)) {
+      post.likes.push(req.user.id);
+      post.numberOfLikes += 1;
+    } else {
+      const userIndex = post.likes.indexOf(req.user.id);
+      post.likes.splice(userIndex, 1);
+      post.numberOfLikes -= 1;
+    }
+    await post.save();
+    res.status(200).json({
+      success: true,
+      post,
+    });
+  } catch (error) {
+    next(error);
+  }
+};

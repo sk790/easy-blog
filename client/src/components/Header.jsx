@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { toggleTheme } from "../redux/theme/themeSlice";
 import toast from "react-hot-toast";
 import { signoutSuccess } from "../redux/user/userSlice";
-
+import { HiArrowCircleRight } from "react-icons/hi";
 
 export default function Header() {
   const { currentUser } = useSelector((state) => state.user);
@@ -17,7 +17,6 @@ export default function Header() {
   const path = useLocation().pathname;
   const [searchTearm, setSearchTearm] = useState("");
   const location = useLocation();
-  console.log(searchTearm);
 
   useEffect(() => {
     const urlPrams = new URLSearchParams(location.search);
@@ -47,16 +46,16 @@ export default function Header() {
       toast.error(error.message);
     }
   };
-const handleSubmit = (e)=>{
-  e.preventDefault();
-  navigate(`/search?searchTearm=${searchTearm}`)
-}
-  
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    navigate(`/search?searchTearm=${searchTearm}`);
+  };
+
   return (
-    <Navbar className="border-b-2 self-center whitespace-nowrap text-sm sm:text-xl font-semibold dark:text-white">
-      <Link to="/">
-        <span className="px-2 bg-gradient-to-r from-violet-500 to-fuchsia-500 rounded-lg">
-          Saurabh's
+    <Navbar className="border-b-2 items-center self-center whitespace-nowrap text-sm sm:text-xl font-semibold dark:text-white">
+      <Link to="/" className="self-center flex items-center">
+        <span className="px-4 mr-2 text-2xl bg-gradient-to-r from-green-700 to-fuchsia-500 rounded-lg">
+          Easy
         </span>
         Blog
       </Link>
@@ -66,7 +65,7 @@ const handleSubmit = (e)=>{
           type="search"
           rightIcon={AiOutlineSearch}
           className="hidden lg:inline"
-          onChange={(e)=>setSearchTearm(e.target.value)}
+          onChange={(e) => setSearchTearm(e.target.value)}
           value={searchTearm}
         />
       </form>
@@ -102,6 +101,12 @@ const handleSubmit = (e)=>{
                 {currentUser?.email}
               </span>
             </Dropdown.Header>
+            {currentUser?.isAdmin && (
+              <Link to={"/dashboard?tab=dashboard"}>
+                <Dropdown.Item>Dashboard</Dropdown.Item>
+                <Dropdown.Divider />
+              </Link>
+            )}
             <Link to={"dashboard?tab=profile"}>
               <Dropdown.Item>Profile</Dropdown.Item>
               <Dropdown.Divider />

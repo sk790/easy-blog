@@ -1,8 +1,11 @@
 import { Link } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 
 export default function PostCard({ post }) {
+  const location = useLocation();
+  console.log(location.pathname);
   return (
-    <div className='group relative w-full border border-teal-500 hover:border-2 h-[400px] overflow-hidden rounded-lg sm:w-[350px] transition-all'>
+    <div className={`group relative border border-teal-500 hover:border-2 h-[400px] overflow-hidden rounded-lg sm:w-[${location.pathname === "/search"?"320":"350"}px] transition-all`}>
       <Link to={`/post/${post.slug}`}>
         <img
           src={post.image}

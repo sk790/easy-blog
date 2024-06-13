@@ -94,7 +94,7 @@ export default function DashComments() {
                         setShowModal(true);
                         setCommentId(comment._id);
                       }}
-                      className="cursor-pointer text-red-700 font-medium hover:underline"
+                      className="cursor-pointer bg-red-600 text-white p-1 rounded-md font-medium hover:underline"
                     >
                       Delete
                     </span>

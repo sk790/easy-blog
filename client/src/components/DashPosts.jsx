@@ -73,6 +73,8 @@ export default function DashPosts() {
               <Table.HeadCell>Date Updated</Table.HeadCell>
               <Table.HeadCell>Post Image</Table.HeadCell>
               <Table.HeadCell>Post Title</Table.HeadCell>
+              <Table.HeadCell>Likes</Table.HeadCell>
+              <Table.HeadCell>Comments</Table.HeadCell>
               <Table.HeadCell>Category</Table.HeadCell>
               <Table.HeadCell>Delete</Table.HeadCell>
               <Table.HeadCell>Edit</Table.HeadCell>
@@ -93,8 +95,10 @@ export default function DashPosts() {
                     </Link>
                   </Table.Cell>
                   <Table.Cell>
-                    <Link to={`/post/${post.slug}`}>{post.title}</Link>
+                    <Link className="line-clamp-3" to={`/post/${post.slug}`}>{post.title}</Link>
                   </Table.Cell>
+                  <Table.Cell className="text-center">{0}</Table.Cell>
+                  <Table.Cell className="text-center">{0}</Table.Cell>
                   <Table.Cell>{post.category}</Table.Cell>
                   <Table.Cell>
                     <span
@@ -102,14 +106,14 @@ export default function DashPosts() {
                         setShowModal(true);
                         setPostId(post._id);
                       }}
-                      className="cursor-pointer text-red-700 font-medium hover:underline"
+                      className="cursor-pointer bg-red-600 text-white p-1 rounded-md font-medium hover:underline"
                     >
                       Delete
                     </span>
                   </Table.Cell>
                   <Table.Cell>
                     <Link to={`/update-post/${post._id}`}>
-                      <span className="cursor-pointer text-teal-400 hover:underline font-medium">
+                      <span className="cursor-pointer text-white bg-teal-400 p-1 rounded-md px-4 hover:underline font-medium">
                         Edit
                       </span>
                     </Link>
