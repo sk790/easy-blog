@@ -16,7 +16,7 @@ export default function PostPage() {
   const { postSlug } = useParams();
   const [recentPosts, setRecentPosts] = useState([]);
   const [like, setLike] = useState(false);
-  let [countLikes,setCountLikes] = useState(0);
+  let [countLikes, setCountLikes] = useState(0);
   console.log(recentPosts);
   useEffect(() => {
     const fetchPost = async () => {
@@ -26,7 +26,7 @@ export default function PostPage() {
         const data = await res.json();
         if (data.success) {
           setPost(data.posts[0]);
-          setCountLikes(data.posts[0].likes.length)
+          setCountLikes(data.posts[0].likes.length);
           if (data.posts[0].likes.includes(currentUser._id)) {
             setLike(true);
           }
@@ -92,7 +92,7 @@ export default function PostPage() {
       }
     );
     const data = await res.json();
-    if(data.success){
+    if (data.success) {
       setLike(!like);
     }
 
@@ -107,7 +107,7 @@ export default function PostPage() {
     );
   return (
     <main className="p-3 flex flex-col max-w-6xl mx-auto min-h-screen">
-      <h1 className="text-3xl mt-10 p-3 text-center font-serif max-w-2xl mx-auto lg:text-4xl">
+      <h1 className="text-2xl mt-10 p-3 font-normal max-w-4xl mx-auto text-center lg:text-3xl">
         {posts && posts.title}
       </h1>
       <Link
@@ -133,7 +133,7 @@ export default function PostPage() {
         </div>
       </div>
       <div
-        className="p-3 max-w-2xl mx-auto w-full post-content"
+        className="p-3 border max-w-1xl mx-auto w-full post-content"
         dangerouslySetInnerHTML={{ __html: posts && posts.content }}
       ></div>
       <div className="mx-auto max-w-4xl"></div>

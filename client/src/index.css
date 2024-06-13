@@ -56,3 +56,20 @@ body{
     background-color: black;
     border-radius: 10px;
 } */
+.post-content h3{
+    font-size: 1rem;
+    font-weight: 600;
+    font-family: sans-serif;
+    margin: 1rem 0;
+}
+.post-content h3{
+    font-size: 1.2rem;
+    font-weight: 600;
+    font-family: sans-serif;
+    margin: 1rem 0;
+}
+.post-content li{
+    margin-bottom: 0.5rem;
+    list-style: disc;
+    margin-left: 2.5rem;
+}

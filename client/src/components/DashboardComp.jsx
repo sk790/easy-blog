@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+
 import {
   HiAnnotation,
   HiArrowNarrowUp,
   HiDocumentText,
   HiOutlineUserGroup,
 } from "react-icons/hi";
-import { Button, Table } from "flowbite-react";
+import { Button, Spinner, Table } from "flowbite-react";
 import { Link } from "react-router-dom";
 export default function DashboardComp() {
   const [users, setUsers] = useState([]);
@@ -18,7 +19,10 @@ export default function DashboardComp() {
   const [lastMonthUsers, setLastMonthUsers] = useState(0);
   const [lastMonthPosts, setLastMonthPosts] = useState(0);
   const [lastMonthComments, setLastMonthComments] = useState(0);
+  const [loading, setLoading] = useState(false);
   const { currentUser } = useSelector((state) => state.user);
+
+
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -37,29 +41,35 @@ export default function DashboardComp() {
 
     const fetchPosts = async () => {
       try {
+        setLoading(true);
         const res = await fetch("/api/post/getposts?limit=5");
         const data = await res.json();
         if (data.success) {
+          setLoading(false);
           setPosts(data.posts);
           setTotalPosts(data.totalPosts);
           setLastMonthPosts(data.lastMonthPosts);
         }
       } catch (error) {
         console.log(error.message);
+        setLoading(false);
       }
     };
 
     const fetchComments = async () => {
       try {
+        setLoading(true);
         const res = await fetch("/api/comment/get-all-comments?limit=5");
         const data = await res.json();
         if (data.success) {
+          setLoading(false);
           setComments(data.comments);
           setTotalComments(data.totalComments);
           setLastMonthComments(data.lastMonthComments);
         }
       } catch (error) {
         console.log(error.message);
+        setLoading(false);
       }
     };
     if (currentUser.isAdmin) {
@@ -69,6 +79,12 @@ export default function DashboardComp() {
     }
   }, [currentUser]);
 
+  if (loading)
+    return (
+      <div className="flex justify-center items-center mx-auto min-h-screen">
+        <Spinner size={"xl"} />
+      </div>
+    );
   return (
     <div className="p-3 md:mx-auto">
       <div className="flex-wrap flex gap-4 justify-center">
