@@ -4,6 +4,7 @@ import toast from "react-hot-toast";
 import { HiOutlineExclamationCircle, HiTrash } from "react-icons/hi";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import { Spinner } from "flowbite-react";
 
 export default function DashComments() {
   const { currentUser } = useSelector((state) => state.user);
@@ -11,14 +12,17 @@ export default function DashComments() {
   const [showMore, setShowMore] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const [commentId, setCommentId] = useState(null);
+  const [loading, setLoading] = useState(false);
   console.log(comments);
 
   useEffect(() => {
     const fetchComments = async () => {
+      setLoading(true);
       const res = await fetch(`/api/comment/get-all-comments`);
 
       const data = await res.json();
       setComments(data.comments);
+      setLoading(false);
       if (data.comments.length < 9) {
         setShowMore(false);
       }
@@ -31,11 +35,13 @@ export default function DashComments() {
   const handleShowMore = async () => {
     const startIndex = comments.length;
     try {
+      setLoading(true);
       const res = await fetch(
         `/api/comment/get-all-comments?startIndex=${startIndex}`
       );
       const data = await res.json();
       if (data.success) {
+        setLoading(false);
         setComments((comment) => [...comment, ...data.comments]);
         if (data.comments.length < 9) {
           setShowMore(false);
@@ -44,10 +50,12 @@ export default function DashComments() {
       }
     } catch (error) {
       console.log(error);
+      setLoading(false);
     }
   };
   const handleDeleteComment = async () => {
     setShowModal(false);
+    setLoading(true);
     try {
       const res = await fetch(
         `/api/comment/admin-delete-comment/${commentId}`,
@@ -57,14 +65,21 @@ export default function DashComments() {
       );
       const data = await res.json();
       if (data.success) {
+        setLoading(false);
         toast.success(data.message);
         setComments(comments.filter((comment) => comment._id !== commentId));
       }
     } catch (error) {
+      setLoading(false);
       console.log(error);
     }
   };
-
+  if (loading)
+    return (
+      <div className="flex justify-center items-center min-h-screen m-auto">
+        <Spinner size="xl" />
+      </div>
+    );
   return (
     <div className="table-auto overflow-x-scroll md:mx-auto p-3 scrollbar scrollbar-track-slate-100 scrollbar-thumb-slate-500 dark:scrollbar-track-slate-700 dark:scrollbar-thumb-slate-400">
       {currentUser.isAdmin && comments.length > 0 ? (

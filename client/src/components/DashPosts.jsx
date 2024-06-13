@@ -1,4 +1,4 @@
-import { Button, Modal, Table } from "flowbite-react";
+import { Button, Modal, Spinner, Table } from "flowbite-react";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { HiOutlineExclamationCircle, HiTrash } from "react-icons/hi";
@@ -11,9 +11,11 @@ export default function DashPosts() {
   const [showMore, setShowMore] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const [postId, setPostId] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const fetchPosts = async () => {
+      setLoading(true);
       const res = await fetch(`/api/post/getposts/?userId=${currentUser._id}`);
 
       const data = await res.json();
@@ -21,6 +23,7 @@ export default function DashPosts() {
       if (data.posts.length < 9) {
         setShowMore(false);
       }
+      setLoading(false);
     };
     if (currentUser.isAdmin) {
       fetchPosts();
@@ -30,12 +33,14 @@ export default function DashPosts() {
   const handleShowMore = async () => {
     const startIndex = posts.length;
     try {
+      setLoading(true);
       const res = await fetch(
         `/api/post/getposts/?userId=${currentUser._id}&startIndex=${startIndex}`
       );
       const data = await res.json();
       if (data.success) {
         setPosts((posts) => [...posts, ...data.posts]);
+        setLoading(false);
         if (data.posts.length < 9) {
           setShowMore(false);
         }
@@ -43,11 +48,13 @@ export default function DashPosts() {
       }
     } catch (error) {
       console.log(error);
+      setLoading(false);
     }
   };
   const handleDeletePost = async () => {
     setShowModal(false);
     try {
+      setLoading(true);
       const res = await fetch(
         `/api/post/deletepost/${postId}/${currentUser._id}`,
         {
@@ -56,13 +63,21 @@ export default function DashPosts() {
       );
       const data = await res.json();
       if (data.success) {
+        setLoading(false);
         toast.success(data.message);
         setPosts(posts.filter((post) => post._id !== postId));
       }
     } catch (error) {
       console.log(error);
+      setLoading(false);
     }
   };
+  if (loading)
+    return (
+      <div className="flex justify-center items-center min-h-screen m-auto">
+        <Spinner size="xl" />
+      </div>
+    );
 
   return (
     <div className="table-auto overflow-x-scroll md:mx-auto p-3 scrollbar scrollbar-track-slate-100 scrollbar-thumb-slate-500 dark:scrollbar-track-slate-700 dark:scrollbar-thumb-slate-400">
@@ -95,7 +110,9 @@ export default function DashPosts() {
                     </Link>
                   </Table.Cell>
                   <Table.Cell>
-                    <Link className="line-clamp-3" to={`/post/${post.slug}`}>{post.title}</Link>
+                    <Link className="line-clamp-3" to={`/post/${post.slug}`}>
+                      {post.title}
+                    </Link>
                   </Table.Cell>
                   <Table.Cell className="text-center">{0}</Table.Cell>
                   <Table.Cell className="text-center">{0}</Table.Cell>

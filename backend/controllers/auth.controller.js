@@ -50,13 +50,17 @@ export const signIn = async (req, res, next) => {
     }
     const token = jwt.sign(
       { id: validUser._id, isAdmin: validUser.isAdmin },
-      process.env.JWT_SECRET
+      process.env.JWT_SECRET,
+      { expiresIn: "1h" } // Adding an expiration time for security
     );
 
     res
       .status(200)
       .cookie("access_token", token, {
         httpOnly: true,
+        secure: process.env.NODE_ENV === "production", // Secure flag for production
+        sameSite: "strict", // Prevent CSRF attacks
+        expires: new Date(Date.now() + 10 * 365 * 24 * 60 * 60 * 1000)
       })
       .json({ user: validUser, success: true, message: "SignIn Successfull" });
   } catch (error) {
@@ -78,6 +82,9 @@ export const google = async (req, res, next) => {
         .status(200)
         .cookie("access_token", token, {
           httpOnly: true,
+          secure: process.env.NODE_ENV === "production",
+          sameSite: "strict",
+          expires: new Date(Date.now() + 10 * 365 * 24 * 60 * 60 * 1000),
         })
         .json(rest);
     } else {
@@ -103,6 +110,9 @@ export const google = async (req, res, next) => {
         .status(200)
         .cookie("access_token", token, {
           httpOnly: true,
+          secure: process.env.NODE_ENV === "production",
+          sameSite: "strict",
+          expires: new Date(Date.now() + 10 * 365 * 24 * 60 * 60 * 1000)
         })
         .json(rest);
     }

@@ -6,6 +6,8 @@ import CommentSection from "../components/CommentSection";
 import PostCard from "../components/PostCard";
 import { useSelector } from "react-redux";
 import { FaHeart, FaComment } from "react-icons/fa";
+import { set } from "mongoose";
+import Likes from "../components/Likes";
 export default function PostPage() {
   const navigate = useNavigate();
   const { currentUser } = useSelector((state) => state.user);
@@ -14,6 +16,7 @@ export default function PostPage() {
   const { postSlug } = useParams();
   const [recentPosts, setRecentPosts] = useState([]);
   const [like, setLike] = useState(false);
+  let [countLikes,setCountLikes] = useState(0);
   console.log(recentPosts);
   useEffect(() => {
     const fetchPost = async () => {
@@ -23,6 +26,10 @@ export default function PostPage() {
         const data = await res.json();
         if (data.success) {
           setPost(data.posts[0]);
+          setCountLikes(data.posts[0].likes.length)
+          if (data.posts[0].likes.includes(currentUser._id)) {
+            setLike(true);
+          }
           setLoading(false);
         } else {
           setLoading(false);
@@ -51,7 +58,7 @@ export default function PostPage() {
     //     setLoading(false);
     //   }
     // }
-  }, [postSlug,like]);
+  }, [postSlug]);
 
   useEffect(() => {
     const fetchRecentPosts = async () => {
@@ -85,7 +92,10 @@ export default function PostPage() {
       }
     );
     const data = await res.json();
-    setLike(!like);
+    if(data.success){
+      setLike(!like);
+    }
+
     console.log(data);
   };
 
@@ -117,37 +127,9 @@ export default function PostPage() {
         <span>
           Created at: {new Date(posts && posts.createdAt).toLocaleDateString()}
         </span>
+        {/* Like component */}
         <div className="italic flex gap-5">
-          <button
-            onClick={() => handleLike(posts && posts._id)}
-            type="button"
-            className="flex items-center gap-2 text-2xl"
-          >
-            {
-              <FaHeart
-                className={`${
-                  posts &&
-                  posts.likes.includes(currentUser && currentUser._id) &&
-                  "text-red-600"
-                }`}
-              />
-            }
-            <div className="flex gap-2">
-              {posts && posts.likes.length}
-              <span>like</span>
-            </div>
-          </button>
-          {/* <button
-            // onClick={handleEdit}
-            type="button"
-            className="flex items-center gap-2"
-          >
-            {<FaComment className="hover:text-red-600" />}
-            <div className="flex gap-2">
-              {(posts && posts.likes) || 1 + "k"}
-              <span>comments</span>
-            </div>
-          </button> */}
+          {/* <Likes posts = {posts}/> */}
         </div>
       </div>
       <div

@@ -1,9 +1,10 @@
-import { Button, Modal, Table } from "flowbite-react";
+import { Button, Modal, Spinner, Table } from "flowbite-react";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { HiOutlineExclamationCircle, HiTrash } from "react-icons/hi";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+
 
 export default function DashUsers() {
   const { currentUser } = useSelector((state) => state.user);
@@ -11,13 +12,16 @@ export default function DashUsers() {
   const [showMore, setShowMore] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const [userId, setUserId] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const fetchPosts = async () => {
+      setLoading(true);
       const res = await fetch(`/api/user/getusers`);
 
       const data = await res.json();
       setUsers(data.users);
+      setLoading(false);
       if (data.users.length < 9) {
         setShowMore(false);
       }
@@ -29,11 +33,13 @@ export default function DashUsers() {
 
   const handleShowMore = async () => {
     const startIndex = users.length;
+    setLoading(true);
     try {
       const res = await fetch(`/api/user/getusers/?startIndex=${startIndex}`);
       const data = await res.json();
       if (data.success) {
         setUsers((users) => [...users, ...data.users]);
+        setLoading(false);
         if (data.users.length < 9) {
           setShowMore(false);
         }
@@ -41,23 +47,33 @@ export default function DashUsers() {
       }
     } catch (error) {
       console.log(error);
+      setLoading(false);
     }
   };
   const handleDeleteUser = async () => {
     setShowModal(false);
+    setLoading(true);
     try {
       const res = await fetch(`/api/user/delete/${userId}`, {
         method: "DELETE",
       });
       const data = await res.json();
       if (data.success) {
+        setLoading(false);
         toast.success(data.message);
         setUsers(users.filter((user) => user._id !== userId));
       }
     } catch (error) {
       console.log(error);
+      setLoading(false);
     }
   };
+  if (loading)
+    return (
+      <div className="flex justify-center items-center min-h-screen m-auto">
+        <Spinner size="xl" />
+      </div>
+    );
 
   return (
     <div className="table-auto overflow-x-scroll md:mx-auto p-3 scrollbar scrollbar-track-slate-100 scrollbar-thumb-slate-500 dark:scrollbar-track-slate-700 dark:scrollbar-thumb-slate-400">
