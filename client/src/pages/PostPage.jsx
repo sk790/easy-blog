@@ -51,7 +51,7 @@ export default function PostPage() {
     //     setLoading(false);
     //   }
     // }
-  }, [postSlug]);
+  }, [postSlug,like]);
 
   useEffect(() => {
     const fetchRecentPosts = async () => {
@@ -121,7 +121,7 @@ export default function PostPage() {
           <button
             onClick={() => handleLike(posts && posts._id)}
             type="button"
-            className="flex items-center gap-2"
+            className="flex items-center gap-2 text-2xl"
           >
             {
               <FaHeart
@@ -137,7 +137,7 @@ export default function PostPage() {
               <span>like</span>
             </div>
           </button>
-          <button
+          {/* <button
             // onClick={handleEdit}
             type="button"
             className="flex items-center gap-2"
@@ -147,7 +147,7 @@ export default function PostPage() {
               {(posts && posts.likes) || 1 + "k"}
               <span>comments</span>
             </div>
-          </button>
+          </button> */}
         </div>
       </div>
       <div
