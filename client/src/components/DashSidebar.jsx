@@ -49,22 +49,29 @@ export default function DashSidebar() {
     <Sidebar className="w-full md:w-56">
       <Sidebar.Items>
         <Sidebar.ItemGroup>
-          {currentUser && currentUser.isAdmin && (
-            <Link to={"/dashboard?tab=dashboard"}>
-              <Sidebar.Item
-                active={tab === "dashboard"}
-                icon={HiOutlineUserGroup}
-                as="div"
-              >
-                Dashboard
-              </Sidebar.Item>
-            </Link>
-          )}
+          {currentUser &&
+            (currentUser.isAdmin || currentUser.isSuperAdmin) && (
+              <Link to={"/dashboard?tab=dashboard"}>
+                <Sidebar.Item
+                  active={tab === "dashboard"}
+                  icon={HiOutlineUserGroup}
+                  as="div"
+                >
+                  Dashboard
+                </Sidebar.Item>
+              </Link>
+            )}
           <Link to={"/dashboard?tab=profile"}>
             <Sidebar.Item
               active={tab === "profile"}
               icon={FaRegUser}
-              label={currentUser && currentUser.isAdmin ? "Admin" : "User"}
+              label={
+                currentUser && currentUser.isSuperAdmin
+                  ? "Super Admin"
+                  : currentUser.isAdmin
+                  ? "Admin"
+                  : "User"
+              }
               labelColor="dark"
               as="div"
             >
@@ -78,35 +85,42 @@ export default function DashSidebar() {
               </Sidebar.Item>
             </Link>
           )} */}
-          {currentUser && currentUser.isAdmin && (
-            <Link to={"/dashboard?tab=posts"}>
-              <Sidebar.Item active={tab === "posts"} icon={RiArticleLine} as="div">
-                Posts
-              </Sidebar.Item>
-            </Link>
-          )}
-          {currentUser && currentUser.isAdmin && (
-            <Link to={"/dashboard?tab=users"}>
-              <Sidebar.Item
-                active={tab === "users"}
-                icon={HiOutlineUserGroup}
-                as="div"
-              >
-                Users
-              </Sidebar.Item>
-            </Link>
-          )}
-          {currentUser && currentUser.isAdmin && (
-            <Link to={"/dashboard?tab=comments"}>
-              <Sidebar.Item
-                active={tab === "comments"}
-                icon={LiaCommentSolid}
-                as="div"
-              >
-                Comments
-              </Sidebar.Item>
-            </Link>
-          )}
+          {currentUser &&
+            (currentUser.isAdmin || currentUser.isSuperAdmin) && (
+              <Link to={"/dashboard?tab=posts"}>
+                <Sidebar.Item
+                  active={tab === "posts"}
+                  icon={RiArticleLine}
+                  as="div"
+                >
+                  Posts
+                </Sidebar.Item>
+              </Link>
+            )}
+          {currentUser &&
+            (currentUser.isAdmin || currentUser.isSuperAdmin) && (
+              <Link to={"/dashboard?tab=users"}>
+                <Sidebar.Item
+                  active={tab === "users"}
+                  icon={HiOutlineUserGroup}
+                  as="div"
+                >
+                  Users
+                </Sidebar.Item>
+              </Link>
+            )}
+          {currentUser &&
+            (currentUser.isAdmin || currentUser.isSuperAdmin) && (
+              <Link to={"/dashboard?tab=comments"}>
+                <Sidebar.Item
+                  active={tab === "comments"}
+                  icon={LiaCommentSolid}
+                  as="div"
+                >
+                  Comments
+                </Sidebar.Item>
+              </Link>
+            )}
           <Sidebar.Item
             onClick={handleSignOut}
             icon={HiArrowCircleRight}

@@ -88,7 +88,7 @@ export default function DashComments() {
             <Table.Head>
               <Table.HeadCell>Date created</Table.HeadCell>
               <Table.HeadCell>comment content</Table.HeadCell>
-              <Table.HeadCell>Number of likes</Table.HeadCell>
+              <Table.HeadCell>likes</Table.HeadCell>
               <Table.HeadCell>comment id</Table.HeadCell>
               <Table.HeadCell>Userid</Table.HeadCell>
               <Table.HeadCell>delete</Table.HeadCell>
@@ -100,7 +100,7 @@ export default function DashComments() {
                     {new Date(comment.createdAt).toLocaleDateString()}
                   </Table.Cell>
                   <Table.Cell>{comment && comment.content}</Table.Cell>
-                  <Table.Cell>{comment && comment.likes.length}</Table.Cell>
+                  <Table.Cell className="text-center">{comment && comment.likes.length}</Table.Cell>
                   <Table.Cell>{comment && comment._id}</Table.Cell>
                   <Table.Cell>{comment && comment.userId}</Table.Cell>
                   <Table.Cell>

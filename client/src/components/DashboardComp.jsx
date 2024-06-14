@@ -22,8 +22,6 @@ export default function DashboardComp() {
   const [loading, setLoading] = useState(false);
   const { currentUser } = useSelector((state) => state.user);
 
-
-
   useEffect(() => {
     const fetchUsers = async () => {
       try {
@@ -72,7 +70,7 @@ export default function DashboardComp() {
         setLoading(false);
       }
     };
-    if (currentUser.isAdmin) {
+    if (currentUser?.isAdmin || currentUser?.isSuperAdmin) {
       fetchUsers();
       fetchPosts();
       fetchComments();

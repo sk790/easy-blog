@@ -5,7 +5,6 @@ import { HiOutlineExclamationCircle, HiTrash } from "react-icons/hi";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
-
 export default function DashUsers() {
   const { currentUser } = useSelector((state) => state.user);
   const [users, setUsers] = useState([]);
@@ -15,7 +14,7 @@ export default function DashUsers() {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    const fetchPosts = async () => {
+    const fetchUsers = async () => {
       setLoading(true);
       const res = await fetch(`/api/user/getusers`);
 
@@ -26,8 +25,8 @@ export default function DashUsers() {
         setShowMore(false);
       }
     };
-    if (currentUser.isAdmin) {
-      fetchPosts();
+    if (currentUser?.isAdmin || currentUser?.isSuperAdmin) {
+      fetchUsers();
     }
   }, [currentUser._id]);
 
@@ -62,6 +61,9 @@ export default function DashUsers() {
         setLoading(false);
         toast.success(data.message);
         setUsers(users.filter((user) => user._id !== userId));
+      } else {
+        toast.error(data.error);
+        setLoading(false);
       }
     } catch (error) {
       console.log(error);
@@ -111,7 +113,11 @@ export default function DashUsers() {
                           : "text-gray-300"
                       } font-medium`}
                     >
-                      {user.isAdmin ? "Admin" : "User"}
+                      {user.isSuperAdmin
+                        ? "Super Admin"
+                        : user.isAdmin
+                        ? "Admin"
+                        : "User"}
                     </span>
                   </Table.Cell>
                   <Table.Cell>

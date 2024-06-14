@@ -14,7 +14,7 @@ router.route("/update/:userId").put(verifyToken, updateUser);
 router.route("/delete/:userId").delete(verifyToken, deleteUser);
 router.route("/signout").post(verifyToken, signOut);
 router.route("/getusers").get(verifyToken, getUsers);
-router.route("/delete/:userId").get(verifyToken, getUsers);
+// router.route("/delete/:userId").get(verifyToken, getUsers);
 router.route("/:userId").get(getUser);
 
 

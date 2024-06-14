@@ -1,4 +1,4 @@
-import { Button, FileInput, Select, TextInput } from "flowbite-react";
+import { Button, FileInput, Select, Spinner, TextInput } from "flowbite-react";
 import { useEffect, useState } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
@@ -18,6 +18,7 @@ export default function UpdatePost() {
   const [file, setFile] = useState(null);
   const [imageUploadProgress, setImageUploadProgress] = useState(null);
   const [formData, setFormData] = useState({ content: "" });
+  const [updateLoading, setUpdateLoading] = useState(false);
   const { postId } = useParams();
   const { currentUser } = useSelector((state) => state.user);
 
@@ -74,7 +75,7 @@ export default function UpdatePost() {
   const handleUpdatePost = async (e) => {
     e.preventDefault();
     try {
-      console.log("handle update post", formData);
+      setUpdateLoading(true);
       const res = await fetch(
         `/api/post/updatepost/${formData._id}/${currentUser._id}`,
         {
@@ -87,12 +88,14 @@ export default function UpdatePost() {
       );
       const data = await res.json();
       if (data.success) {
+        setUpdateLoading(false);
         toast.success(data.message);
         navigate(`/post/${formData.slug}`);
       } else {
         toast.error(data.error);
       }
     } catch (error) {
+      setUpdateLoading(false);
       toast.error("Internal Server Error");
       console.log(error);
     }
@@ -162,9 +165,20 @@ export default function UpdatePost() {
           value={formData.content}
           onChange={handleQuillChange}
         />
-        <Button type="submit" gradientDuoTone={"purpleToBlue"} size={"lg"}>
-          Update Post
-        </Button>
+        <Button
+              gradientDuoTone="purpleToPink"
+              type="submit"
+              disabled={updateLoading}
+            >
+              {updateLoading ? (
+                <>
+                  <Spinner size="sm" />
+                  <span className="pl-3">Updating....</span>
+                </>
+              ) : (
+                "Update Post"
+              )}
+            </Button>
       </form>
     </div>
   );

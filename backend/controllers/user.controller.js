@@ -35,12 +35,6 @@ export const updateUser = async (req, res, next) => {
     }
   }
   try {
-    // if (email) {
-    //   const findemail = await User.findOne({ email });
-    //   if (findemail) {
-    //     return next(errorHandler(400, "Email already exists", res));
-    //   }
-    // }
     const updatedUser = await User.findByIdAndUpdate(
       req.params.userId,
       {
@@ -65,8 +59,13 @@ export const updateUser = async (req, res, next) => {
   }
 };
 export const deleteUser = async (req, res, next) => {
-  if (!req.user.isAdmin && req.user.id !== req.params.userId) {
-    return next(errorHandler(403, "You can only delete your account", res));
+  if (req.user && !req.user.isSuperAdmin) {
+    return next(
+      errorHandler(403, "Yor are not authorized to delete any account!", res)
+    );
+  }
+  if (req.user.id === req.params.userId) {
+    return next(errorHandler(403, "You can not delete your account!", res));
   }
   const user = await User.findByIdAndDelete(req.params.userId);
   if (!user) {
@@ -92,7 +91,7 @@ export const signOut = async (req, res, next) => {
 
 export const getUsers = async (req, res, next) => {
   if (req.user && !req.user.isAdmin) {
-    next(errorHandler(403, "You are not allowed to get all users", res));
+    return next(errorHandler(403, "You are not allowed to get all users", res));
   }
   try {
     const startIndex = parseInt(req.query.startIndex) || 0;
