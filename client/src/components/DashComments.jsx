@@ -5,6 +5,7 @@ import { HiOutlineExclamationCircle, HiTrash } from "react-icons/hi";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { Spinner } from "flowbite-react";
+import Skeleton from "./Skeleton";
 
 export default function DashComments() {
   const { currentUser } = useSelector((state) => state.user);
@@ -74,12 +75,13 @@ export default function DashComments() {
       console.log(error);
     }
   };
-  if (loading)
+  if (loading) {
     return (
-      <div className="flex justify-center items-center min-h-screen m-auto">
-        <Spinner size="xl" />
+      <div className="space-y-4 mx-auto">
+        <Skeleton />
       </div>
     );
+  }
   return (
     <div className="table-auto overflow-x-scroll md:mx-auto p-3 scrollbar scrollbar-track-slate-100 scrollbar-thumb-slate-500 dark:scrollbar-track-slate-700 dark:scrollbar-thumb-slate-400">
       {currentUser.isAdmin && comments.length > 0 ? (

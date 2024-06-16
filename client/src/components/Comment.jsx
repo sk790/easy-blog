@@ -77,7 +77,7 @@ export default function Comment({ comment, onLike, onEdit, onDelete }) {
       <div className="flex-1">
         <div className="flex items-center mb-1">
           <span className="font-bold mr-1 text-xs truncate">
-            {commentUser ? `@${commentUser.username}` : "anonymous user"}
+            {commentUser?.username }
           </span>
           <span className="text-xs text-gray-500">
             {moment(comment.createdAt).fromNow()}

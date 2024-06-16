@@ -4,6 +4,7 @@ import toast from "react-hot-toast";
 import { HiOutlineExclamationCircle, HiTrash } from "react-icons/hi";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import Skeleton from "./Skeleton";
 
 export default function DashPosts() {
   const { currentUser } = useSelector((state) => state.user);
@@ -16,7 +17,14 @@ export default function DashPosts() {
   useEffect(() => {
     const fetchPosts = async () => {
       setLoading(true);
-      const res = await fetch(`/api/post/getposts/?userId=${currentUser._id}`);
+      let query;
+      if (currentUser?.isSuperAdmin) {
+        query = `/api/post/getposts/`
+      }else{
+        query = `/api/post/getposts/?userId=${currentUser._id}`
+      }
+
+      const res = await fetch(query);
 
       const data = await res.json();
       setPosts(data.posts);
@@ -25,7 +33,7 @@ export default function DashPosts() {
       }
       setLoading(false);
     };
-    if (currentUser.isAdmin) {
+    if (currentUser.isAdmin || currentUser.isSuperAdmin) {
       fetchPosts();
     }
   }, [currentUser._id]);
@@ -72,12 +80,13 @@ export default function DashPosts() {
       setLoading(false);
     }
   };
-  if (loading)
+  if (loading) {
     return (
-      <div className="flex justify-center items-center min-h-screen m-auto">
-        <Spinner size="xl" />
+      <div className="space-y-4 mx-auto">
+        <Skeleton />
       </div>
     );
+  }
 
   return (
     <div className="table-auto overflow-x-scroll md:mx-auto p-3 scrollbar scrollbar-track-slate-100 scrollbar-thumb-slate-500 dark:scrollbar-track-slate-700 dark:scrollbar-thumb-slate-400">

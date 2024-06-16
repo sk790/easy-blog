@@ -9,6 +9,7 @@ import {
 } from "react-icons/hi";
 import { Button, Spinner, Table } from "flowbite-react";
 import { Link } from "react-router-dom";
+import Skeleton from "./Skeleton";
 export default function DashboardComp() {
   const [users, setUsers] = useState([]);
   const [comments, setComments] = useState([]);
@@ -77,12 +78,13 @@ export default function DashboardComp() {
     }
   }, [currentUser]);
 
-  if (loading)
+  if (loading) {
     return (
-      <div className="flex justify-center items-center mx-auto min-h-screen">
-        <Spinner size={"xl"} />
+      <div className="space-y-4 mx-auto">
+        <Skeleton />
       </div>
     );
+  }
   return (
     <div className="p-3 md:mx-auto">
       <div className="flex-wrap flex gap-4 justify-center">

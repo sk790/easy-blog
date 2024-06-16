@@ -13,7 +13,7 @@ export default function CommentSection({ postId }) {
   const [loading, setLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [commentIdToDelete, setCommentIdToDelete] = useState(null);
-
+  console.log(comments);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -29,7 +29,7 @@ export default function CommentSection({ postId }) {
     } catch (error) {
       console.log(error);
     }
-  }, [postId, loading]);
+  }, [postId,loading]);
 
   const handleSaveComment = async (e) => {
     e.preventDefault();
@@ -92,7 +92,7 @@ export default function CommentSection({ postId }) {
   const handleEdit = async (comment, editedContent) => {
     setComments(
       comments.map((c) =>
-        c._id === comment._id ? { ...c, content: editedContent } : comment
+        c._id === comment._id ? { ...c, content: editedContent } : c
       )
     );
   };

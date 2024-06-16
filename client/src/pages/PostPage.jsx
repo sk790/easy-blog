@@ -40,24 +40,6 @@ export default function PostPage() {
       }
     };
     fetchPost();
-    // const fetchLikes = async () => {
-    //   try {
-    //     setLoading(true);
-    //     const res = await fetch(
-    //       `/api/post/check-like/${postSlug}`
-    //     );
-    //     const data = await res.json();
-    //     if (data.success) {
-    //       setLike(data.liked);
-    //       setLoading(false);
-    //     } else {
-    //       setLoading(false);
-    //     }
-    //   } catch (error) {
-    //     console.log(error);
-    //     setLoading(false);
-    //   }
-    // }
   }, [postSlug]);
 
   useEffect(() => {
@@ -121,7 +103,7 @@ export default function PostPage() {
       <img
         src={posts && posts.image}
         alt={posts && posts.title}
-        className="mt-5 object-cover w-full p-5 max-h-[600px]"
+        className="mt-5 object-cover py-10 border max-w-full  max-h-[600px]"
       />
       <div className="flex justify-between p-3 border-b-2 border-x-slate-300 text-sm lg:text-xl">
         <span>
@@ -138,7 +120,7 @@ export default function PostPage() {
       ></div>
       <div className="mx-auto max-w-4xl"></div>
       <CommentSection postId={posts && posts._id} />
-      <CallToAction />
+      {/* <CallToAction /> */}
       <div className="flex gap-5 flex-col justify-center items-center mb-5">
         <h1 className="text-4xl font-bold">Recent Posts</h1>
         <div className="flex flex-wrap gap-3">

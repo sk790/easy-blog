@@ -4,6 +4,7 @@ import toast from "react-hot-toast";
 import { HiOutlineExclamationCircle, HiTrash } from "react-icons/hi";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import Skeleton from "./Skeleton";
 
 export default function DashUsers() {
   const { currentUser } = useSelector((state) => state.user);
@@ -70,12 +71,13 @@ export default function DashUsers() {
       setLoading(false);
     }
   };
-  if (loading)
+  if (loading) {
     return (
-      <div className="flex justify-center items-center min-h-screen m-auto">
-        <Spinner size="xl" />
+      <div className="space-y-4 mx-auto">
+        <Skeleton />
       </div>
     );
+  }
 
   return (
     <div className="table-auto overflow-x-scroll md:mx-auto p-3 scrollbar scrollbar-track-slate-100 scrollbar-thumb-slate-500 dark:scrollbar-track-slate-700 dark:scrollbar-thumb-slate-400">
@@ -109,7 +111,7 @@ export default function DashUsers() {
                     <span
                       className={`${
                         user.isAdmin
-                          ? "text-white bg-gray-700  p-1 rounded-md dark:bg-black dark:text-green-700"
+                          ? "text-white bg-gray-700  p-1 rounded-md dark:bg-black dark:text-green-700 text-sm lg:text"
                           : "text-gray-300"
                       } font-medium`}
                     >
