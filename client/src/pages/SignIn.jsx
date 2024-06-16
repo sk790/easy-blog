@@ -63,7 +63,7 @@ export default function SignIn() {
             Blog
           </Link>
           <p className="text-sm mt-5">
-            This is a demo project. You can sign in with your email and password
+            You can sign in with your email and password
             or with Google.
           </p>
         </div>
@@ -75,7 +75,7 @@ export default function SignIn() {
               <Label value="Your email" />
               <TextInput
                 type="email"
-                placeholder="name@company.com"
+                placeholder="example@gmail.com"
                 value={formData.email}
                 onChange={handleChange}
                 name="email"
