@@ -77,8 +77,8 @@ export default function DashComments() {
   };
   if (loading) {
     return (
-      <div className="space-y-4 mx-auto">
-        <Skeleton />
+      <div className="h-screen flex items-center mx-auto">
+        <Spinner aria-label="Extra large spinner example" size="xl" />
       </div>
     );
   }

@@ -50,6 +50,7 @@ export default function Header() {
     e.preventDefault();
     navigate(`/search?searchTearm=${searchTearm}`);
   };
+  console.log(currentUser?.profilePicture);
 
   return (
     <Navbar className="border-b-2 items-center self-center whitespace-nowrap text-sm sm:text-xl font-semibold dark:text-white">
@@ -69,13 +70,15 @@ export default function Header() {
           value={searchTearm}
         />
       </form>
-      <Button className="w-12 h-10 lg:hidden" color="gray" pill>
-        <AiOutlineSearch />
-      </Button>
+      <Link to="/search">
+        <Button className="w-12 h-10 lg:hidden" color="gray" pill>
+          <AiOutlineSearch />
+        </Button>
+      </Link>
       <div className="flex gap-2 md:order-2">
         <Button
           pill
-          className="w-12 h-10"
+          className="w-12 h-10 hidden md:inline"
           color="gray"
           onClick={() => dispatch(toggleTheme())}
         >
@@ -87,7 +90,7 @@ export default function Header() {
             inline={true}
             label={
               <Avatar
-                alt="User settings"
+                alt="user"
                 img={currentUser?.profilePicture}
                 rounded={true}
               />
@@ -101,12 +104,13 @@ export default function Header() {
                 {currentUser?.email}
               </span>
             </Dropdown.Header>
-            {currentUser && (currentUser.isSuperAdmin || currentUser.isAdmin)&& (
-              <Link to={"/dashboard?tab=dashboard"}>
-                <Dropdown.Item>Dashboard</Dropdown.Item>
-                <Dropdown.Divider />
-              </Link>
-            )}
+            {currentUser &&
+              (currentUser.isSuperAdmin || currentUser.isAdmin) && (
+                <Link to={"/dashboard?tab=dashboard"}>
+                  <Dropdown.Item>Dashboard</Dropdown.Item>
+                  <Dropdown.Divider />
+                </Link>
+              )}
             <Link to={"dashboard?tab=profile"}>
               <Dropdown.Item>Profile</Dropdown.Item>
               <Dropdown.Divider />
@@ -115,7 +119,7 @@ export default function Header() {
           </Dropdown>
         ) : (
           <Link to="/sign-in">
-            <Button gradientDuoTone={"purpleToBlue"} outline>
+            <Button className="w-full" gradientDuoTone={"purpleToBlue"} outline>
               Sign In
             </Button>
           </Link>

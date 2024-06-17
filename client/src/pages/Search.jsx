@@ -1,7 +1,8 @@
-import { Button, Select, TextInput } from "flowbite-react";
+import { Button, Select, Spinner, TextInput } from "flowbite-react";
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import PostCard from "../components/PostCard";
+import Skeleton from "../components/Skeleton";
 export default function Search() {
   const location = useLocation();
   const navigate = useNavigate();
@@ -14,7 +15,7 @@ export default function Search() {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(false);
   const [showMore, setShowMore] = useState(false);
-console.log(posts);
+  console.log(posts);
   useEffect(() => {
     const urlPrams = new URLSearchParams(location.search);
     const searchTermFromUrl = urlPrams.get("searchTerm");
@@ -134,14 +135,18 @@ console.log(posts);
         </form>
       </div>
       <div className="w-full">
-        <h1 className="text-3xl font-semibold sm:border-b border-gray-500 p-3 mt-5 ">
+        <h1 className="text-3xl text-center font-semibold sm:border-b border-gray-500 p-3 mt-5 ">
           Posts results:
         </h1>
         <div className="p-7 flex flex-wrap gap-4">
           {!loading && posts.length === 0 && (
             <p className="text-xl text-gray-500">No posts found.</p>
           )}
-          {loading && <p className="text-xl text-gray-500">Loading...</p>}
+          {loading && (
+            <div className="space-y-4 mx-auto">
+              <Spinner color="purple" size="xl" />
+            </div>
+          )}
           {!loading &&
             posts &&
             posts.map((post) => <PostCard key={post._id} post={post} />)}
