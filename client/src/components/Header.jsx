@@ -55,7 +55,7 @@ export default function Header() {
   return (
     <Navbar className="border-b-2 items-center self-center whitespace-nowrap text-sm sm:text-xl font-semibold dark:text-white">
       <Link to="/" className="self-center flex items-center">
-        <span className="px-4 mr-2 text-2xl bg-gradient-to-r from-green-700 to-fuchsia-500 rounded-lg">
+        <span className="px-4 mr-2 text-2xl bg-gradient-to-r from-green-500 via-indigo-600 to-blue-500 rounded-lg">
           Easy
         </span>
         Blog

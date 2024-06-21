@@ -127,6 +127,7 @@ export default function Search() {
               <option value="React.js">React.js</option>
               <option value="Next.js">Next.js</option>
               <option value="javascript">JavaScript</option>
+              <option value="other">other</option>
             </Select>
           </div>
           <Button type="submit" outline gradientDuoTone="purpleToPink">

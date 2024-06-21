@@ -194,7 +194,7 @@ export default function UpdatePost() {
           onChange={handleQuillChange}
         />
         <Button
-              gradientDuoTone="purpleToPink"
+              className="bg-gradient-to-r from-green-500 via-indigo-600 to-blue-500 mt-5"
               type="submit"
               disabled={updateLoading}
             >

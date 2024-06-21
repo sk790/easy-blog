@@ -117,7 +117,6 @@ export default function CreatePost() {
 
   const module = {
     toolbar: toolbarOptions,
-    syntax: hljs
   };
 
   return (
@@ -144,6 +143,7 @@ export default function CreatePost() {
             <option value="javascript">Java Script</option>
             <option value="React.js">React</option>
             <option value="Next.js">Next Js</option>
+            <option value="other">other</option>
           </Select>
         </div>
         <div className="flex gap-4 items-center justify-between border-4 border-teal-500 border-dotted p-3">
@@ -180,7 +180,7 @@ export default function CreatePost() {
           value={formData.content}
           // formats={formats}
         />
-        <Button type="submit" gradientDuoTone={"purpleToBlue"} size={"lg"}>
+        <Button type="submit" className="bg-gradient-to-r from-green-500 via-indigo-600 to-blue-500 mt-5" size={"lg"}>
           Publish
         </Button>
       </form>
