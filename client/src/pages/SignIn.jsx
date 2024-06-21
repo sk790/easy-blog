@@ -57,7 +57,7 @@ export default function SignIn() {
         {/* left */}
         <div className="flex-1">
           <Link to="/" className="font-bold dark:text-white text-4xl">
-            <span className="px-5 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-lg text-white">
+            <span className="px-5 bg-gradient-to-r from-green-500 via-gray-600 to-red-600 rounded-lg text-white">
               Easy
             </span>
             Blog
