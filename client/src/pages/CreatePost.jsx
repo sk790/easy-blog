@@ -1,9 +1,10 @@
 import { Button, FileInput, Select, TextInput } from "flowbite-react";
 import { useEffect, useState } from "react";
 import ReactQuill from "react-quill";
+import hljs from "highlight.js";
 import "react-quill/dist/quill.snow.css";
 import toast from "react-hot-toast";
-import {useNavigate} from 'react-router-dom'
+import { useNavigate } from "react-router-dom";
 import {
   getDownloadURL,
   getStorage,
@@ -13,7 +14,7 @@ import {
 import { app } from "../firebase";
 
 export default function CreatePost() {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const [file, setFile] = useState(null);
   const [imageUploadProgress, setImageUploadProgress] = useState(null);
   const [formData, setFormData] = useState({});
@@ -61,7 +62,7 @@ export default function CreatePost() {
     }
   };
 
-  const handleSubmit = async(e)=>{
+  const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const res = await fetch("/api/post/create", {
@@ -70,19 +71,54 @@ export default function CreatePost() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(formData),
-      })
+      });
       const data = await res.json();
-      if(data.success){
+      if (data.success) {
         toast.success(data.message);
         navigate(`/post/${data.post.slug}`);
-      }else{
+      } else {
         toast.error(data.error);
       }
     } catch (error) {
       toast.error("Internal Server Error");
       console.log(error);
     }
-  }
+  };
+  // const formats = [
+  //   'font','size',
+  //   'bold','italic','underline','strike',
+  //   'color','background',
+  //   'script',
+  //   'header','blockquote','code-block',
+  //   'indent','list',
+  //   'direction','align',
+  //   'link','image','video','formula',
+  // ]
+  var toolbarOptions = [
+    ["bold", "italic", "underline", "strike"], // toggled buttons
+    ["blockquote", "code-block"],
+    ["link", "image", "video", "formula"],
+
+    [{ header: 1 }, { header: 2 }], // custom button values
+    [{ list: "ordered" }, { list: "bullet" }, { list: "check" }],
+    [{ script: "sub" }, { script: "super" }], // superscript/subscript
+    [{ indent: "-1" }, { indent: "+1" }], // outdent/indent
+    [{ direction: "rtl" }], // text direction
+
+    [{ size: ["small", false, "large", "huge"] }], // custom dropdown
+    [{ header: [1, 2, 3, 4, 5, 6, false] }],
+
+    [{ color: [] }, { background: [] }], // dropdown with defaults from theme
+    [{ font: [] }],
+    [{ align: [] }],
+
+    ["clean"], // remove formatting button
+  ];
+
+  const module = {
+    toolbar: toolbarOptions,
+    syntax: hljs
+  };
 
   return (
     <div className="min-h-screen max-w-3xl mx-auto p-3">
@@ -136,11 +172,13 @@ export default function CreatePost() {
         )}
         <ReactQuill
           theme="snow"
+          modules={module}
           className="h-72 mb-12"
           placeholder="Write something..."
           required
           onChange={(value) => setFormData({ ...formData, content: value })}
           value={formData.content}
+          // formats={formats}
         />
         <Button type="submit" gradientDuoTone={"purpleToBlue"} size={"lg"}>
           Publish
