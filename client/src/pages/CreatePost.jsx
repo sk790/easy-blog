@@ -180,7 +180,11 @@ export default function CreatePost() {
           value={formData.content}
           // formats={formats}
         />
-        <Button type="submit" className="bg-gradient-to-r from-green-500 via-indigo-600 to-blue-500 mt-5" size={"lg"}>
+        <Button
+          type="submit"
+          className="bg-gradient-to-r from-green-500 via-indigo-600 to-blue-500 mt-5"
+          size={"lg"}
+        >
           Publish
         </Button>
       </form>

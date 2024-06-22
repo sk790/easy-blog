@@ -92,7 +92,7 @@ export default function SignIn() {
               />
             </div>
             <Button
-              gradientDuoTone="purpleToPink"
+            className="bg-gradient-to-r from-green-500 via-indigo-600 to-blue-500"
               type="submit"
               disabled={loading}
             >
