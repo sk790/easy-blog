@@ -1,21 +1,3 @@
-// // Import the functions you need from the SDKs you need
-// import { initializeApp } from "firebase/app";
-// // TODO: Add SDKs for Firebase products that you want to use
-// // https://firebase.google.com/docs/web/setup#available-libraries
-
-// // Your web app's Firebase configuration
-// const firebaseConfig = {
-//   apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
-//   authDomain: "easy-blog-f26d9.firebaseapp.com",
-//   projectId: "easy-blog-f26d9",
-//   storageBucket: "easy-blog-f26d9.appspot.com",
-//   messagingSenderId: "1025951658178",
-//   appId: "1:1025951658178:web:aa938458e5f0d39b7c4b5b"
-// };
-
-// // Initialize Firebase
-// export const app = initializeApp(firebaseConfig);
-
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 // TODO: Add SDKs for Firebase products that you want to use
@@ -24,11 +6,11 @@ import { initializeApp } from "firebase/app";
 // Your web app's Firebase configuration
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
-  authDomain: "easy-blog-cd8a2.firebaseapp.com",
-  projectId: "easy-blog-cd8a2",
-  storageBucket: "easy-blog-cd8a2.appspot.com",
-  messagingSenderId: "70050918340",
-  appId: "1:70050918340:web:dfa1a372a219b53ff53e91",
+  authDomain: "easy-blog2-7025c.firebaseapp.com",
+  projectId: "easy-blog2-7025c",
+  storageBucket: "easy-blog2-7025c.appspot.com",
+  messagingSenderId: "190533108595",
+  appId: "1:190533108595:web:31997899de2a426cfd3b06",
 };
 
 // Initialize Firebase
