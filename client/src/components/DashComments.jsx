@@ -14,7 +14,7 @@ export default function DashComments() {
   const [showModal, setShowModal] = useState(false);
   const [commentId, setCommentId] = useState(null);
   const [loading, setLoading] = useState(false);
-  console.log(comments);
+  console.log({comments});
 
   useEffect(() => {
     const fetchComments = async () => {

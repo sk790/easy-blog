@@ -26,14 +26,17 @@ export default function DashboardComp() {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
+        setLoading(true);
         const res = await fetch("/api/user/getusers?limit=5");
         const data = await res.json();
         if (data.success) {
+          setLoading(false);
           setUsers(data.users);
           setTotalUsers(data.totalUsers);
           setLastMonthUsers(data.lastMonthUsers);
         }
       } catch (error) {
+        setLoading(false);
         console.log(error.message);
       }
     };

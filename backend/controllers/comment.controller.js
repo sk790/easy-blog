@@ -109,9 +109,7 @@ export const deleteComment = async (req, res, next) => {
 export const getAllComments = async (req, res, next) => {
   try {
 
-    const user = await User.findById(req.user.id);
-
-    if (!req.user.isAdmin) {
+    if (!req.user.isSuperAdmin) {
       return next(
         errorHandler(403, "You are not allowed to get all comments", res)
       );
@@ -128,6 +126,8 @@ export const getAllComments = async (req, res, next) => {
     if (!comments) {
       return next(errorHandler(404, "No comments found", res));
     }
+    console.log({comments});
+    
     const totalComments = await Comment.countDocuments();
     const now = new Date();
     const oneMonthAgo = new Date(
