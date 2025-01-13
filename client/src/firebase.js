@@ -15,34 +15,3 @@ const firebaseConfig = {
 
 // Initialize Firebase
 export const app = initializeApp(firebaseConfig);
-
-// *
-// 1
-// rules_version = '2';
-// 2
-// ​
-// 3
-// Craft rules based on data in your Firestore database
-4;
-// allow write: if firestore.get(
-5;
-//    /databases/(default)/documents/users/$(request.auth.uid)).data.isAdmin;
-6;
-
-// service firebase.storage {
-// 7
-//   match /b/{bucket}/o {
-// 8
-//     match /{allPaths=**} {
-// 9
-//       allow read;
-// 10
-//       allow write:if
-// 11
-//       request.resource.contentType.matches('image/.*')
-// 12
-//     }
-// 13
-//   }
-// 14
-// }
