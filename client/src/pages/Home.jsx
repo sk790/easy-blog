@@ -18,14 +18,16 @@ export default function Home() {
   }, []);
   return (
     <div>
-      
       <div className="flex flex-col gap-6 p-28 px-3 max-w-6xl mx-auto ">
-        <h1 className="text-3xl font-bold lg:text-6xl">Welcome to Easy Blog:<br/> Your Hub for Web Development Insights</h1>
+        <h1 className="text-3xl font-bold lg:text-6xl">
+          Welcome to Easy Blog:
+          <br /> Your Hub for Web Development Insights
+        </h1>
         <p className="text-gray-500 text-xs sm:text-lg">
           Welcome to Easy Blog, the ultimate destination for web development
           enthusiasts! Whether you're a seasoned developer, a budding coder, or
           simply curious about the world of web technologies, our blog offers a
-          treasure trove of knowledge and inspiration.
+          treasure trove of knowledge and inspiration Saurabh.
         </p>
         <Link
           to="/search"
