@@ -30,7 +30,7 @@ app.use(express.static(path.join(__dirname, "/client/dist")));
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "client", "dist", "index.html"));
 });
-const PORT = 3000;
+const PORT = 4002;
 
 app.listen(PORT, () => {
   console.log(`server is running on port ${PORT}`);
