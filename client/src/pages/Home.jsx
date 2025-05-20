@@ -27,7 +27,7 @@ export default function Home() {
           Welcome to Easy Blog, the ultimate destination for web development
           enthusiasts! Whether you're a seasoned developer, a budding coder, or
           simply curious about the world of web technologies, our blog offers a
-          treasure trove of knowledge and inspiration Saurabh.
+          treasure trove of knowledge and inspiration Saurabh Nagar 2.
         </p>
         <Link
           to="/search"
